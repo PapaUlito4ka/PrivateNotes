@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}List notes{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+    {% for note in notes.data %}
+
+        <div class="mt-3 cloud p-2">
+            <p class="text-muted">Created at {{ note.created_at }}</p>
+            <p class="m-0">{{ note.text }}</p>
+        </div>
+
+    {% endfor %}
+
+    <div class="mt-3 d-flex justify-content-center">
+        <nav aria-label="cloud mt-3">
+            <ul class="pagination">
+                {% if notes.prev is not None %}
+                    <li class="page-item"><a class="page-link prev-page" href="{% url 'list_notes' %}?page={{ notes.prev }}">Previous</a></li>
+                {% endif %}
+                <li class="page-item disabled"><a class="page-link cur-page" href="">{{ notes.cur }}</a></li>
+                {% if notes.next is not None %}
+                    <li class="page-item"><a class="page-link next-page" href="{% url 'list_notes' %}?page{{ notes.next }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}

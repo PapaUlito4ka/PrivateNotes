@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Sign in{% endblock %}
+
+{% block content %}
+
+    <div class="row mt-3">
+        <div class="col-4"></div>
+        <div class="col-4 cloud d-flex flex-column align-items-center p-3">
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% elif form.errors %}
+                {{ form.errors }}
+            {% endif %}
+            {% if errors %}
+                <p class="text-center text-danger">{{ errors }}</p><br>
+            {% endif %}
+
+            {% if next %}
+                {% if request.user.is_authenticated %}
+                    <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+                {% else %}
+                    <p>Please login to see this page.</p>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email</label>
+                    {{ form.email|add_class:"form-control" }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">Password</label>
+                    {{ form.password|add_class:"form-control" }}
+                </div>
+                <div class="d-flex flex-fill justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+{% endblock %}
