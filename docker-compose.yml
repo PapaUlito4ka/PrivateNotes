@@ -1,14 +1,6 @@
 version: "3.9"
 
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_NAME=privatenotes
-      - POSTGRES_USER=papa
-      - POSTGRES_PASSWORD=pfhfpf410
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -17,8 +9,19 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=privatenotes
+      - POSTGRES_DB=privatenotes
       - POSTGRES_USER=papa
       - POSTGRES_PASSWORD=pfhfpf410
+      - DEBUG=0
+      - SECRET_KEY=super_secret
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
     depends_on:
       - db
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=privatenotes
+      - POSTGRES_USER=papa
+      - POSTGRES_PASSWORD=pfhfpf410
